@@ -13,4 +13,8 @@ class groupActivity extends Model
     {
         return $this->belongsTo(Client::class,'client_id');
     }
+     public function staff()
+    {
+        return $this->belongsTo(Staff::class,'staff_id')->with('user');
+    }
 }

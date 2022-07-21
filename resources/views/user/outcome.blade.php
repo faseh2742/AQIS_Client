@@ -17,7 +17,7 @@
                         aria-expanded="false" aria-controls="collapse{{$category->id}}">
                        {{$category->name}}
                     </button>
-                    <a href='#' class="btn btn-primary float-right" data-toggle="modal" data-target="#outcomeModel{{$category->id}}">Add <i
+                    <a href='#' class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#outcomeModel{{$category->id}}">Add <i
                         class="fa fa-plus"></i></a>
                 </h5>
             </div>

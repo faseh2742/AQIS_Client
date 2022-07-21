@@ -54,14 +54,21 @@ class EventController extends Controller
     public function RegisterClient(Request $request)
     {
   try{
-        // $event= Event::find($id);
+     if(DB::table('client_event')->where(['client_id'=>Auth::user()->client->id,'event_id'=>$request->id,])->exists()){
+       return redirect()->route('Events.index')->with('info',"Already Registered to that Event");
+     }
+     else{
+
         DB::table('client_event')
         ->insert([
              'client_id'=>Auth::user()->client->id,
              'event_id'=>$request->id,
         ]);
-        // return $event->clients();
+      
        return  redirect()->route('Events.index')->with('message','Registered Successfully');
+     }
+
+      
     } catch (\Exception $th) {
         return redirect()->route('Events.index')->with('error',$th->getMessage());
     }
@@ -72,7 +79,7 @@ class EventController extends Controller
 
         DB::table('client_event')
         ->where([
-             'client_id'=>$this->client_id,
+             'client_id'=>Auth::user()->client->id,
              'event_id'=>$request->id,
         ])->delete();
         // return $event->clients();
@@ -88,9 +95,11 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show(Event $event)
+    public function show(Event $event, $id)
     {
-        return "Show";
+
+        $event= Event::with('groupActivity')->where('id',$id)->first();
+        return view('event.show',compact('event'))->render();
     }
 
     /**

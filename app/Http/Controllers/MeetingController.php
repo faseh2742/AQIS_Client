@@ -47,7 +47,15 @@ class MeetingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+        $meeting=Meeting::find($request->id);
+        $meeting->status=$request->status;
+        $meeting->update();
+           return redirect()->route('Meetings.index')->with('message', 'Meeting Status Successfully Updated');
+        } catch (\Exception $th) {
+            return redirect()->route('Meetings.index')->with('error', $th->getMessage());
+        }
+
     }
 
     /**
@@ -58,10 +66,11 @@ class MeetingController extends Controller
      */
     public function show(Meeting $meeting,$id)
     {
-        $meeting=Meeting::find($id);
-        $questions=Question::all();
+        $meeting=Meeting::where("id",$id)->with('staff')->first();
+        // $questions=Question::all();
 
-         return view('meeting.feedback',compact('questions','meeting'));
+        //  return view('meeting.feedback',compact('questions','meeting'));
+        return view('meeting.show',compact('meeting'))->render();
     }
 
     /**
@@ -98,7 +107,7 @@ class MeetingController extends Controller
 
         try {
             ClientQuestion::find($id)->delete();
-            return redirect()->route('Meeting.index')->with('message', 'Successfully Deleted');
+            return redirect()->route('Meetings.index')->with('message', 'Successfully Deleted');
         } catch (\Exception $th) {
             return redirect()->route('Meetings.index')->with('error', $th->getMessage());
         }

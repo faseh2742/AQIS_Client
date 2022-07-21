@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-title">
                     <h4>My Documents</h4>
-                    <a href='#' class="btn btn-primary float-right" data-toggle="modal" data-target="#documentModel">Add
+                    <a href='#' class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#documentModel">Add
                         <i class="fa fa-plus"></i></a>
                 </div>
                 <div class="card-body">
@@ -29,7 +29,7 @@
                                     <tr>
 
                                         <td>
-                                        <a href="{{asset($document->doc_file)}}" class="btn btn-link" target="_blank">{{ $document->doc_name }}</a>
+                                        <a href="{{asset('images/'.$document->doc_file)}}" class="btn btn-link" target="_blank">{{ $document->doc_name }}</a>
                                         </td>
                                         <td>{{ $document->created_at }}</td>
                                         <td>{{ $document->updated_at }}</td>
@@ -94,6 +94,7 @@
                                                                         ->first();
                                                                 @endphp
                                                                 @foreach ($eduDropdown->items as $row)
+
                                                                     <option value="{{ $row->item }}" <?=( $document->doc_name==$row->item)?'selected':'';?>>
                                                                         {{ $row->item }}
                                                                     </option>
@@ -162,7 +163,10 @@
                                         ->first();
                                 @endphp
                                 @foreach ($eduDropdown->items as $row)
-                                    <option value="{{ $row->item }}">
+                               
+                                    <option value="{{ $row->item }}"
+
+                                     >
                                         {{ $row->item }}
                                     </option>
                                 @endforeach

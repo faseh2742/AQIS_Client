@@ -21,4 +21,11 @@ class ClientOutcome extends Model
     {
         return $this->belongsTo(Outcome::class);
     }
+    public function getCreatedAtAttribute() {
+    return date("F j, Y, g:i a",strtotime($this->attributes['created_at']));
+    }
+     public function getUpdatedAtAttribute()
+    {
+    return date("F j, Y, g:i a",strtotime($this->attributes['updated_at']));
+    }
 }

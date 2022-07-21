@@ -47,22 +47,25 @@ class DocumentController extends Controller
         try {
             $doc_file="";
             if ($request->has('doc_file')) {
-               $doc_file= $request->file('doc_file')->store('images','public');
-
-
-            }
+                 $file=$request->file('doc_file');
+               $destinationPath = 'images/';
+               $doc_file = date('YmdHis') . "." . $file->getClientOriginalExtension();
+               $file->move($destinationPath, $doc_file);
+             }
             if(Document::where(['doc_name'=>$request->doc_name,'client_id'=>Auth::user()->client->id])->exists()){
                 return redirect()->route('Document.index')->with('error', 'Document Already Uploaded');
             }
             else{
-            $document = new Document();
-            $document->doc_name = $request->doc_name;
-            $document->doc_file = $doc_file;
-            $document->client_id = Auth::user()->client->id;
-            $document->user_id = Auth::id();
-            $document->save();
+             $document = new Document();
+             $document->doc_name = $request->doc_name;
+             $document->doc_file = $doc_file;
+             $document->client_id = Auth::user()->client->id;
+             $document->user_id = Auth::id();
+             $document->save();
+
+            
             return redirect()->route('Document.index')->with('message', 'Successfully Created');
-            }
+         }
         } catch (\Exception $th) {
             return redirect()->route('Document.index')->with('error', $th->getMessage());
         }
@@ -101,20 +104,20 @@ class DocumentController extends Controller
     {
         // return Document::where(['client_id'=>Auth::user()->client->id])->where('doc_name',$request->doc_name)->exists();
         try {
-            $doc_file="";
+          
+           $doc_file="";
             if ($request->has('doc_file')) {
-
-            //    $doc_file= $request->file('doc_file')->store('images','public');
-               $file = $request->file('doc_file');
-               $file->move(public_path('images'),date('Y-m-d').$file->getClientOriginalName());
-
-            }
+                 $file=$request->file('doc_file');
+               $destinationPath = 'images/';
+               $doc_file = date('YmdHis') . "." . $file->getClientOriginalExtension();
+               $file->move($destinationPath, $doc_file);
+             }
             if(!Document::where('doc_name',$request->doc_name)->where(['client_id'=>Auth::user()->client->id])->exists()){
 
 
 
                 $document = Document::find($id);
-                $document->doc_name = $request->doc_name;
+                 $document->doc_name = $request->doc_name;
                 $document->doc_file = $doc_file;
                 $document->client_id = Auth::user()->client->id;
                 $document->user_id = Auth::id();
@@ -123,6 +126,13 @@ class DocumentController extends Controller
              }
 
             else{
+
+                $document = Document::find($id);
+               $document->doc_name = $request->doc_name;
+                $document->doc_file = $doc_file;
+                $document->client_id = Auth::user()->client->id;
+                $document->user_id = Auth::id();
+                $document->update();
                 return redirect()->route('Document.index')->with('error', 'Document Already Uploaded');
 
             }

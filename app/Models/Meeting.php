@@ -16,4 +16,11 @@ class Meeting extends Model
     public function questions(){
         return $this->belongsTo(Staff::class,'staff_id')->with('user');
     }
+     public function getCreatedAtAttribute() {
+    return date("F j, Y, g:i a",strtotime($this->attributes['created_at']));
+    }
+     public function getUpdatedAtAttribute()
+    {
+    return date("F j, Y, g:i a",strtotime($this->attributes['updated_at']));
+    }
 }

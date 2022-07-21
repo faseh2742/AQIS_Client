@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-title">
                     <h4>My employeements</h4>
-                    <a href='#' class="btn btn-primary float-right" data-toggle="modal" data-target="#employeementModel">Add <i
+                    <a href='#' class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#employeementModel">Add <i
                             class="fa fa-plus"></i></a>
                 </div>
                 <div class="card-body">

@@ -48,10 +48,6 @@
                     <a href="{{route('Meetings.index')}}">
                         <i class="ti-bookmark"></i> My Meetings</a>
                 </li>
-                <li>
-                    <a href="{{route('Events.index')}}">
-                        <i class="ti-calendar"></i> My Events</a>
-                </li>
 
 
                 <li>

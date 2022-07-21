@@ -103,10 +103,13 @@ class ClientController extends Controller
          $client->childcareNeeded=$request->childcareNeeded;
          $client->notes=$request->notes;
          $client->update();
+         if($client){
+            return redirect()->back()->with('message', 'Successfully Updated');
+         }
 
 
 
-         return redirect()->route('Clients.index')->with('message', 'Successfully Updated');
+        
                //code...
         } catch (\Exception $th) {
             return redirect()->route('Clients.index')->with('error',$th->getMessage());

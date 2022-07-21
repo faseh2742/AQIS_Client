@@ -24,4 +24,11 @@ class Event extends Model
             ['programName'=>"No Program"]
         );
     }
+    public function getCreatedAtAttribute() {
+    return date("F j, Y, g:i a",strtotime($this->attributes['created_at']));
+    }
+     public function getUpdatedAtAttribute()
+    {
+    return date("F j, Y, g:i a",strtotime($this->attributes['updated_at']));
+    }
 }

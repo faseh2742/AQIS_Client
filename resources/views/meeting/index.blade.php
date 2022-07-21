@@ -15,13 +15,13 @@
                   <table class="table">
                       <thead>
                           <tr>
-                              <th>Program</th>
-                              <th>Service</th>
-                              <th>Medium</th>
-                              <th>Location</th>
-                              <th>Staff</th>
-                               <th>Status</th>
-                               <th>Meeting</th>
+                             
+                              <th>Meeting Location</th>
+                              <th>Meeting Date</th>
+                              <th>Facilitator</th>
+                              <th>Status</th>
+                              <th>View</th>
+                              
                           </tr>
                       </thead>
                       <tbody>
@@ -30,29 +30,30 @@
 
                           <tr>
 
-                              <td>{{$row->programName}}</td>
-                              <td>{{$row->serviceProvided}}</td>
-                              <td >{{$row->serviceDelivery}}</td>
 
                               <td >{{$row->location}}</td>
-                              <td >{{$row->staff->user->firstName}}</td>
+                              <td >{{ date("F j, Y, g:i a", strtotime($row->date)) }}</td>
+                              <td >{{$row->staff->user->firstName}} {{$row->staff->user->lastName}}</td>
                               <td>
+                                <form action="{{route('Meetings.store')}}" name="statusForm{{$row->id}}" method="POST">
+                                  @csrf
+                                  <input name="id" value="{{$row->id}}" type="hidden">
+                            <select class="form-control" name="status" onchange="javascript:$('form[name=statusForm{{$row->id}}]').submit()" style="width:150px">
+                            @php
+                                $eduDropdown = App\Models\Dropdown::with('items')
+                                    ->where('name', 'Meeting Status')
+                                    ->first();
+                            @endphp
+                            @foreach ($eduDropdown->items as $drop)
+                                <option value="{{ $drop->item }}" @php echo ($row->status==$drop->item)?"selected":""; @endphp>{{ $drop->item}}</option>
+                            @endforeach
 
-                                @if ($row->status=='Client Cancelled')
-                                <span class="badge badge-danger">{{$row->status}}</span>
-                                @elseif ($row->status=='No Show')
-                                <span class="badge badge-info">{{$row->status}}</span>
-                                @elseif ($row->status=='Rejected')
-                                <span class="badge badge-dark">{{$row->status}}</span>
-                                @elseif ($row->status=='Attended')
-                                <span class="badge badge-success">{{$row->status}}</span>
-                                @endif
-                               </td>
-                              <td >
-                                @if ($row->meetingLink)
-                                <a href="{{$row->meetingLink}}" class="btn btn-success" target="_blank">Join</a>
-                                @endif
-                            </td>
+                        </select>
+                      </form>
+                    </td>
+                    <td>
+                      <a href="javascript:;" onclick="javascript:getMeeting({{$row->id}})" class="btn btn-sm btn-primary">View <i class="ti-eye" aria-hidden="true"></i></a>
+                    </td>
 
                           </tr>
                           @endforeach
@@ -76,13 +77,12 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Program</th>
-                                <th>Service</th>
-                                <th>Medium</th>
-                                <th>Location</th>
-                                <th>Staff</th>
-                                <th>Status</th>
-                                <th>Feedback</th>
+                              <th>Meeting Location</th>
+                              <th>Meeting Date</th>
+                              <th>Facilitator</th>
+                              <th>Feedback</th>
+                              <th>View</th>
+                              
                             </tr>
                         </thead>
                         <tbody>
@@ -91,26 +91,17 @@
 
                             <tr>
 
-                                <td>{{$row->programName}}</td>
-                                <td>{{$row->serviceProvided}}</td>
-                                <td >{{$row->serviceDelivery}}</td>
-
                                 <td >{{$row->location}}</td>
-                                <td >{{$row->staff->user->firstName}}</td>
-                                <td>
-                                    @if ($row->status=='Client Cancelled')
-                                    <span class="badge badge-danger">{{$row->status}}</span>
-                                    @elseif ($row->status=='No Show')
-                                    <span class="badge badge-info">{{$row->status}}</span>
-                                    @elseif ($row->status=='Rejected')
-                                    <span class="badge badge-dark">{{$row->status}}</span>
-                                    @elseif ($row->status=='Attended')
-                                    <span class="badge badge-success">{{$row->status}}</span>
-                                    @endif
-                                </td>
+                              <td >{{ date("F j, Y, g:i a", strtotime($row->date)) }}</td>
+                              <td >{{$row->staff->user->firstName}} {{$row->staff->user->lastName}}</td>
+                              
+                               
                                 <td>
                                     <a href="{{route('Meetings.show',$row->id)}}" class="btn btn-warning btn-sm">Feedback <i class="fa fa-comments-o" aria-hidden="true"></i></a>
                                 </td>
+                                 <td>
+                      <a href="javascript:;" onclick="javascript:getMeeting({{$row->id}})" class="btn btn-sm btn-primary">View <i class="ti-eye" aria-hidden="true"></i></a>
+                    </td
                             </tr>
                             @endforeach
 
@@ -121,4 +112,24 @@
         </div>
       </div>
   </div>
+<div class="modal" id="meetingModal">
+          
+            <div class="modal-body">
+            </div>
+          
+</div>
+@endsection
+@section('script')
+<script >
+   function getMeeting(id){
+        $.get("{{url('Meetings')}}/"+id)
+        .then(function(response){
+
+              $('.modal-body').html(response);
+              $('#meetingModal').show();
+
+        })
+    }
+
+</script>
 @endsection

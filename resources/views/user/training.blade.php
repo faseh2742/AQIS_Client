@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-title">
                     <h4>Trainings</h4>
-                    <a href='#' class="btn btn-primary float-right" data-toggle="modal" data-target="#trainingModel">Add <i
+                    <a href='#' class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#trainingModel">Add <i
                             class="fa fa-plus"></i></a>
                 </div>
                 <div class="card-body">
@@ -38,12 +38,12 @@
                                             <div class="col-sm-6">   <form id="deletetrainingForm{{ $training->id}}" action="{{route('Training.destroy',$training->id)}}" method="POST">
                                                     @method("DELETE")
                                                     @csrf
-                                                <button class="btn btn-danger" type="button" onclick="javascript:(confirm('Do you want to delete ?'))?
+                                                <button class="btn btn-danger btn-sm" type="button" onclick="javascript:(confirm('Do you want to delete ?'))?
                                                 document.getElementById('deletetrainingForm{{ $training->id}}').submit():''"><i class="fa fa-trash" ></i></button>
                                                 </form>
                                             </div>
                                             <div class="col-sm-6">
-                                                    <a href="javascript:;" class="btn btn-info" data-toggle="modal"
+                                                    <a href="javascript:;" class="btn btn-sm btn-info" data-toggle="modal"
                                                     data-target="#trainingModelEdit{{ $training->id}}"><i
                                                         class="fa fa-edit"></i>
                                                     </a>

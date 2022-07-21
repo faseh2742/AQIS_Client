@@ -105,17 +105,6 @@
 
 
 
-                                <div class="user-skill">
-                                    <h4>Notes</h4>
-                                    <ul>
-                                        <li>
-                                           <p>
-                                            {{$profile->client->notes}}
-                                           </p>
-                                        </li>
-
-                                    </ul>
-                                </div>
                             </div>
                             {{-- <div class="col-lg-4"> --}}
                                 {{-- <div class="user-photo m-b-30">

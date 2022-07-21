@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,24 +16,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', function () {
+
+});
 Route::get('/', function () {
+    // Auth::loginUsingId(2);
     return redirect('/login');
 });
 
 
 Auth::routes();
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-         $client_id=\Illuminate\Support\Facades\Auth::user()->client->id;
-         $myEventsCount = App\Models\Event::whereHas('client', function ($q) use ($client_id){
-            $q->where('client_id', $client_id);
-        })->count();
-        $upcomingmeetingsCount = App\Models\Meeting::where('client_id', $client_id)->count();
-        $pastmeetingsCount = App\Models\Meeting::where(['client_id' => $client_id])
-            ->where('date', '<', date('Y-m-d'))
-            ->count();
-    return view('user.index',compact('client_id','myEventsCount','upcomingmeetingsCount','pastmeetingsCount'));
-    });
+
+    Route::get('dashboard', [App\Http\Controllers\EventController::class,'index']);
     Route::resource('Meetings', App\Http\Controllers\MeetingController::class);
 
     Route::resource('Events', App\Http\Controllers\EventController::class);

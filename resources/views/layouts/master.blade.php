@@ -59,6 +59,10 @@
     <link href="{{asset('assets/css/lib/helper.css')}}" rel="stylesheet">
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
     @yield('scripts')
 </head>
 @php
@@ -172,14 +176,14 @@
     <script src="{{asset('assets/js/lib/sparklinechart/sparkline.init.js')}}"></script> --}}
 
     <!-- Select2 -->
-    {{-- <script src="{{asset('assets/js/lib/select2/select2.full.min.js')}}"></script> --}}
+     <script src="{{asset('assets/js/lib/select2/select2.full.min.js')}}"></script> 
 
     <!--  Validation -->
     {{-- <script src="{{asset('assets/js/lib/form-validation/jquery.validate.min.js')}}"></script>
     <script src="{{asset('assets/js/lib/form-validation/jquery.validate-init.js')}}"></script> --}}
 
     <!--  Circle Progress -->
-    {{-- <script src="{{asset('assets/js/lib/circle-progress/circle-progress.min.js')}}"></script>
+    {{--      <script src="{{asset('assets/js/lib/circle-progress/circle-progress.min.js')}}"></script>
     <script src="{{asset('assets/js/lib/circle-progress/circle-progress-init.js')}}"></script> --}}
 
     <!--  Vector Map -->
@@ -284,7 +288,7 @@
     swal("Error !", "{{ session('error') }}", "error");
     @endif
     @if(Session::has('info'))
-    swal("Error !", "{{ session('info') }}", "info");
+    swal("Info !", "{{ session('info') }}", "info");
     @endif
 
     </script>
@@ -318,8 +322,13 @@
     <!--  Dashboard 1 -->
     <script src="{{asset('assets/js/dashboard1.js')}}"></script>
     <script src="{{asset('assets/js/dashboard2.js')}}"></script>
+    
 
+<script>
+    $(document).ready(function() {
+    $('select[name=current_noc]').select2();
 
+</script>
     @yield('script')
 
 </body>

@@ -178,12 +178,9 @@
                                     <label>Street Address</label>
                                     <textarea class="form-control" rows="3"placeholder="Street Address..." name="streetAddress">{{$client->streetAddress}}</textarea>
                                 </div>
-                                <div class="form-group">
-                                    <label>Notes</label>
-                                    <textarea class="form-control" rows="3"placeholder="Notes." name="notes">{{$client->notes}}</textarea>
-                                </div>
                                 <div class="form-group float-right mt-4">
                                     <label>&nbsp</label>
+                                    <a href="{{route('Clients.index')}}" class="btn btn-default">Cancel</a>
                                     <button type="submit"  class="btn btn-success">Update</button>
                                  </div>
                             </div>

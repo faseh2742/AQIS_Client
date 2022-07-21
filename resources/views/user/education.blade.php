@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-title">
                     <h4>My Educations</h4>
-                    <a href='#' class="btn btn-primary float-right" data-toggle="modal" data-target="#educationModel">Add
+                    <a href='#' class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#educationModel">Add
                         <i class="fa fa-plus"></i></a>
                 </div>
                 <div class="card-body">
@@ -21,7 +21,7 @@
                                     <th>Major</th>
                                     <th>Graduation Year</th>
                                     <th>Country</th>
-                                    <th>Major</th>
+                                    <th>Highest Education</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -36,7 +36,7 @@
                                         <td>
 
                                             @if (\Illuminate\Support\Facades\Auth::user()->client->highestEducation_id == $education->id)
-                                                <div class="badge badge-danger p-2">
+                                                <div class="badge badge-success p-2">
                                                     Major
                                                 </div>
 
