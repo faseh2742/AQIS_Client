@@ -156,12 +156,6 @@
         </div>
         <!-- /# column -->
     </div>
-    <div class="modal" id="eventModal">
-          
-            <div class="modal-body">
-            </div>
-          
-</div>
 @endsection
 
 @section('script')
@@ -259,28 +253,24 @@
                 });
             },
             eventClick: function (event) {
-                     $.get("{{url('Events')}}/"+event.id)
-                       .then(function(response){
-
-                              $('.modal-body').html(response);
-                               $('#eventModal').show();
-
-                       })
-              //   var eventDelete = confirm('Are you sure to remove event?');
-              //   if (eventDelete) {
-              //       $.ajax({
-              //           type: "post",
-              //           url: "{{ route('calendar.destroy') }}",
-              //           data: {
-              //               id: event.id,
-              //               _method: 'delete',
-              //           },
-              //           success: function (response) {
-              //             $('.modal-body').html(response);
-              // $('#eventModal').show();
-              //           }
-              //       });
-              //   }
+                var eventDelete = confirm('Are you sure to remove event?');
+                if (eventDelete) {
+                    $.ajax({
+                        type: "post",
+                        url: "{{ route('calendar.destroy') }}",
+                        data: {
+                            id: event.id,
+                            _method: 'delete',
+                        },
+                        success: function (response) {
+                            calendar.fullCalendar('removeEvents', event.id);
+                            iziToast.success({
+                                position: 'topRight',
+                                message: 'Event removed successfully.',
+                            });
+                        }
+                    });
+                }
             }
         });
     });

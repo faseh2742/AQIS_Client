@@ -22,7 +22,7 @@ class EventController extends Controller
      */
     public function index()
     {
-      $events=Event::with('groupActivity')->where('start','<',date('Y-m-d H:i:s'))->get();
+      $events=Event::doesnthave('client')->with('groupActivity')->where('start','<',date('Y-m-d H:i:s'))->get();
        $myEvents=Event::whereHas('client', function($q){
         $q->where('client_id',Auth::user()->client->id);
         })->get();
@@ -36,9 +36,37 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $input = $request->only(['title', 'start', 'end']);
+
+        $request_data = [
+            'title' => 'required',
+            'start' => 'required',
+            'end' => 'required'
+        ];
+
+        $validator = Validator::make($input, $request_data);
+
+        // invalid request
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong, please check all parameters',
+            ]);
+        }
+
+        $event = Event::create([
+            'title' => $input['title'],
+            'start' => $input['start'],
+            'serviceDelivery' => 'Phone',
+            'end' => $input['end'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $event
+        ]);
     }
 
     /**
@@ -108,9 +136,38 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $event)
+    public function edit(Request $request)
     {
-        return "Edit";
+        $input = $request->only(['id', 'title', 'start', 'end']);
+
+        $request_data = [
+            'id' => 'required',
+            'title' => 'required',
+            'start' => 'required',
+            'end' => 'required'
+        ];
+
+        $validator = Validator::make($input, $request_data);
+
+        // invalid request
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong, please check all parameters',
+            ]);
+        }
+
+        $event = Event::where('id', $input['id'])
+            ->update([
+                'title' => $request['title'],
+                'start' => $request['start'],
+                'end' => $request['end'],
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $event
+        ]);
     }
 
     /**
@@ -140,5 +197,18 @@ class EventController extends Controller
     {
 
        return Event::all();
+    }
+
+    public function getDates(Request $request)
+    {
+        if ($request->ajax()) {
+            $events = Event::whereDate('start', '>=', $request->start)
+                ->whereDate('end', '<=', $request->end)
+                ->get();
+
+            return response()->json($events);
+        }
+
+        return view('event.calender');
     }
 }

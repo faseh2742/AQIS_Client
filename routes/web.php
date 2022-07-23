@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +56,10 @@ Route::get('/Calander', function () {
     return view('event.calander');
 })->name('Events.calander');
 
-
+Route::get('calendar', [EventController::class, 'getDates'])->name('calendar.index');
+Route::post('calendar/create-event', [EventController::class, 'create'])->name('calendar.create');
+Route::patch('calendar/edit-event', [EventController::class, 'edit'])->name('calendar.edit');
+Route::delete('calendar/remove-event', [EventController::class, 'destroy'])->name('calendar.destroy');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 

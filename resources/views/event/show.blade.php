@@ -18,11 +18,15 @@
                         <div class="user-job-title">{{$event->type}}</div>
                    
                         <div class="user-send-message">
-                        	@if($event->serviceDelivery=="Video Portal")
-                          <a class="btn btn-success btn-addon btn-small" href="{{$event->meetingLink}}">
-                          	
-                            <i class="ti-briefcase"></i> Join Event</a>
-                             @endif
+                        	
+                        
+                          	<form action="{{ route('Events.RegisterClient') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $event->id }}">
+                                                <button class="btn btn-success btn-sm "><i class="ti-briefcase"></i> Join Event</button>
+                                            </form>
+                           
+                            
                         </div>
                         <div class="custom-tab user-profile-tab">
                           <ul class="nav nav-tabs" role="tablist">

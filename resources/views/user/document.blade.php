@@ -46,7 +46,7 @@
                                                         @method('DELETE')
                                                         @csrf
                                                         <button class="btn btn-danger btn-sm" type="button"
-                                                            onclick="javascript:(confirm('Do you want to delete ?'))?
+                                                            onclick="javascript:(confirm('Do you want to delete {{ $document->doc_name }}?'))?
                                                 document.getElementById('deleteDocumentForm{{ $document->id}}').submit():'' "><i
                                                                 class="fa fa-trash"></i></button>
                                                     </form>
@@ -69,9 +69,7 @@
 
                                     <div class="modal fade" id="documentModelEdit{{ $document->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <form action="{{ route('Document.update', $document->id) }}" method="POST" enctype="multipart/form-data">
-                                            @method('PUT')
-                                            @csrf
+                                        
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -79,12 +77,14 @@
                                                             {{ $document->doc_name }}</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
+                                                            <span aria-hidden="true" class="ti-close"></span>
                                                         </button>
                                                     </div>
 
                                                     <div class="modal-body">
-
+                                  <form name="editDoc" action="{{ route('Document.update', $document->id) }}" method="POST" enctype="multipart/form-data" >
+                                            @method('PUT')
+                                            @csrf
                                                         <div class="form-group">
                                                             <label>Document </label>
                                                             <select class="form-control" name="doc_name">
@@ -103,31 +103,24 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
-                                                           <a href="#" class="btn btn-link">{{$document->doc_file}}</a>
-
-
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>File</label>
-                                                            <input type="file" class="form-control"
-                                                            placeholder="File" name="doc_file"
-                                                            value="{{ $document->doc_file }}" required>
-
+                                                            <label>Document </label>
+                                                            <input type="file" name="file"
+                                                            class="form-control">
                                                         </div>
 
 
 
-
+                                                            </form>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                        <button onclick="$('form[name=editDoc]').submit();" class="btn btn-success">Update</button>
 
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        
                                     </div>
                                 @endforeach
 
@@ -150,10 +143,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('Document.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+               
                     <div class="modal-body">
-
+ <form   action="{{ route('Document.store') }}" method="POST" enctype="multipart/form-data"  class="dropzone" id="dropzone">
+                    @csrf
                         <div class="form-group">
                             <label>Document </label>
                             <select class="form-control" name="doc_name">
@@ -173,24 +166,46 @@
 
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>File</label>
-                            <input type="file" class="form-control"
-                            placeholder="File" name="doc_file"
-                            required>
-
-                        </div>
+                        
+                     
+                    </form>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary" onclick="$('#dropzone').submit();">Add</button>
 
                     </div>
-                </form>
+              
             </div>
         </div>
 
     </div>
 @endsection
+@section('scripts')
 
+@endsection
+@section('script')
+<script type="text/javascript">
+        Dropzone.options.dropzone =
+         {
+            maxFilesize: 12,
+            renameFile: function(file) {
+                var dt = new Date();
+                var time = dt.getTime();
+               return time+file.name;
+            },
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 5000,
+            success: function(file, response) 
+            {
+                console.log(response);
+            },
+            error: function(file, response)
+            {
+               return false;
+            }
+};
+</script>
+@endsection

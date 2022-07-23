@@ -46,8 +46,8 @@ class DocumentController extends Controller
     {
         try {
             $doc_file="";
-            if ($request->has('doc_file')) {
-                 $file=$request->file('doc_file');
+            if ($request->has('file')) {
+                 $file=$request->file('file');
                $destinationPath = 'images/';
                $doc_file = date('YmdHis') . "." . $file->getClientOriginalExtension();
                $file->move($destinationPath, $doc_file);
@@ -106,17 +106,12 @@ class DocumentController extends Controller
         try {
           
            $doc_file="";
-            if ($request->has('doc_file')) {
-                 $file=$request->file('doc_file');
+            if ($request->has('file')) {
+                 $file=$request->file('file');
                $destinationPath = 'images/';
                $doc_file = date('YmdHis') . "." . $file->getClientOriginalExtension();
                $file->move($destinationPath, $doc_file);
-             }
-            if(!Document::where('doc_name',$request->doc_name)->where(['client_id'=>Auth::user()->client->id])->exists()){
-
-
-
-                $document = Document::find($id);
+                  $document = Document::find($id);
                  $document->doc_name = $request->doc_name;
                 $document->doc_file = $doc_file;
                 $document->client_id = Auth::user()->client->id;
@@ -124,18 +119,22 @@ class DocumentController extends Controller
                 $document->update();
                 return redirect()->route('Document.index')->with('message', 'Successfully Updated');
              }
-
-            else{
-
-                $document = Document::find($id);
-               $document->doc_name = $request->doc_name;
-                $document->doc_file = $doc_file;
+             else{
+                   $document = Document::find($id);
+                 $document->doc_name = $request->doc_name;
                 $document->client_id = Auth::user()->client->id;
                 $document->user_id = Auth::id();
                 $document->update();
-                return redirect()->route('Document.index')->with('error', 'Document Already Uploaded');
+                return redirect()->route('Document.index')->with('message', 'Successfully Updated');
+             }
+         
 
-            }
+
+
+             
+           
+
+           
 
 
         } catch (\Exception $th) {
